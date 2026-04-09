@@ -33,8 +33,8 @@ end)
 
 local frame = Instance.new("Frame")
 frame.Name = "Panel"
-frame.Size = UDim2.new(0, 220, 0, 80)
-frame.Position = UDim2.new(0, 12, 0, 12)
+frame.Size = UDim2.fromOffset(220, 80)
+frame.Position = UDim2.fromOffset(12, 12)
 frame.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
 frame.BorderSizePixel = 0
 frame.Parent = gui
