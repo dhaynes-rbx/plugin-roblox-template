@@ -7,13 +7,19 @@ alwaysApply: true
 
 After every code change, run the Rojo build command to deploy the plugin.
 
-First, read `default.project.json` to get the plugin name, then run:
+First, read `default.project.json` to get the plugin name. Then build to the correct path for the current OS:
 
+**macOS**
 ```bash
 rojo build default.project.json --output ~/Documents/Roblox/Plugins/<name>.rbxmx
 ```
 
-Replace `<name>` with the `name` field from `default.project.json`.
+**Windows**
+```bash
+rojo build default.project.json --output "$USERPROFILE\AppData\Local\Roblox\Plugins\<name>.rbxmx"
+```
+
+Replace `<name>` with the `name` field from `default.project.json`. Detect the OS before running — use the macOS path on darwin, and the Windows path on Windows.
 
 Do this before any testing step. If Rojo is not installed, install it first:
 
