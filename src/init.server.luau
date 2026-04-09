@@ -7,9 +7,9 @@ local CoreGui = game:GetService("CoreGui")
 
 -- Toolbar ---------------------------------------------------------------
 
-local toolbar = plugin:CreateToolbar("My Plugin")
+local toolbar = plugin:CreateToolbar("Template Plugin")
 local toggleButton = toolbar:CreateButton(
-	"TogglePanel",
+	"Template Plugin",
 	"Toggle the plugin panel",
 	"rbxassetid://14978120386"
 )
