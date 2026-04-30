@@ -5,6 +5,8 @@ A minimal scaffolding template for Roblox Studio plugins using [Rojo](https://ro
 ## Using this template
 
 Click **Use this template** on GitHub to create a new repository, then clone it locally.
+<img width="722" height="252" alt="image" src="https://github.com/user-attachments/assets/98121b48-4c59-4f3a-b111-71fe6ad1f59d" />
+
 
 ## Setup
 
