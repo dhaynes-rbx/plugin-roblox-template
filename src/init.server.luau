@@ -5,20 +5,23 @@
 
 local CoreGui = game:GetService("CoreGui")
 
+-- CUSTOMIZE: Set your plugin's display name here.
+local PLUGIN_NAME = "Template Plugin"
+
 -- Toolbar ---------------------------------------------------------------
 
-local toolbar = plugin:CreateToolbar("Template Plugin")
+local toolbar = plugin:CreateToolbar(PLUGIN_NAME)
 local toggleButton = toolbar:CreateButton(
-	"Template Plugin",
+	PLUGIN_NAME,
 	"Toggle the plugin panel",
-	"rbxassetid://14978120386"
+	"rbxassetid://14978120386" -- CUSTOMIZE: Replace with your own toolbar icon asset ID
 )
 toggleButton.ClickableWhenViewportHidden = true
 
 -- UI --------------------------------------------------------------------
 
 local gui = Instance.new("ScreenGui")
-gui.Name = "MyPluginGui"
+gui.Name = PLUGIN_NAME .. "Gui"
 gui.ResetOnSpawn = false
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 gui.Enabled = false
@@ -109,7 +112,7 @@ actionButton.MouseButton1Click:Connect(function()
 		setStatus("Done!", false)
 	else
 		setStatus("Error: " .. tostring(err), true)
-		warn("[MyPlugin]", err)
+		warn("[" .. PLUGIN_NAME .. "]", err)
 	end
 end)
 

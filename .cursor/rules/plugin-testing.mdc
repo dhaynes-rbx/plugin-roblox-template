@@ -7,6 +7,12 @@ alwaysApply: true
 
 After every rebuild, test using the Roblox Studio MCP server. Never skip this loop.
 
+## Prerequisites
+
+This rule requires the Roblox Studio MCP server to be configured in Cursor.
+If the MCP server is not available, fall back to manual testing:
+ask the user to confirm the plugin works in Studio.
+
 ## Steps
 
 1. Use the MCP server to open (or confirm open) the test place in Roblox Studio.

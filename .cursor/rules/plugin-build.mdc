@@ -5,10 +5,10 @@ alwaysApply: true
 
 After every code change, run the Rojo build command to deploy the plugin.
 
-Use the following command:
+The output filename **must match** the `name` field in `default.project.json`.
 
 ```bash
-rojo build --plugin template.rbxmx
+rojo build --plugin template-plugin.rbxmx
 ```
 
 Rojo will handle placing the plugin in the correct location for your operating system.
