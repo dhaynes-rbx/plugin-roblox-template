@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+cd "$(dirname "$0")/.."
 
 echo "=== Roblox Plugin Setup ==="
 echo ""
@@ -22,12 +23,12 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i '' "s/\"template-plugin\"/\"$name\"/" default.project.json
     sed -i '' "s|your-username/template-plugin|your-username/$name|" wally.toml
     sed -i '' "s/template-plugin\.rbxmx/$name.rbxmx/" .cursor/rules/plugin-build.mdc
-    sed -i '' "s/local PLUGIN_NAME = \"Template Plugin\"/local PLUGIN_NAME = \"$display_name\"/" src/init.server.luau
+    sed -i '' "s/local PLUGIN_NAME = \"Template Plugin\"/local PLUGIN_NAME = \"$display_name\"/" src/App.server.luau
 else
     sed -i "s/\"template-plugin\"/\"$name\"/" default.project.json
     sed -i "s|your-username/template-plugin|your-username/$name|" wally.toml
     sed -i "s/template-plugin\.rbxmx/$name.rbxmx/" .cursor/rules/plugin-build.mdc
-    sed -i "s/local PLUGIN_NAME = \"Template Plugin\"/local PLUGIN_NAME = \"$display_name\"/" src/init.server.luau
+    sed -i "s/local PLUGIN_NAME = \"Template Plugin\"/local PLUGIN_NAME = \"$display_name\"/" src/App.server.luau
 fi
 
 echo "Installing toolchain..."

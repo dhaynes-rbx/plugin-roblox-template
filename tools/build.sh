@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+cd "$(dirname "$0")/.."
 
 name=$(grep -o '"name"[[:space:]]*:[[:space:]]*"[^"]*"' default.project.json | head -1 | sed 's/.*: *"//;s/"//')
 

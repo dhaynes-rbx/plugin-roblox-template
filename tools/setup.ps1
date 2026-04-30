@@ -1,4 +1,5 @@
 $ErrorActionPreference = "Stop"
+Set-Location (Split-Path $PSScriptRoot)
 
 Write-Host "=== Roblox Plugin Setup ===" -ForegroundColor Cyan
 Write-Host ""
@@ -29,9 +30,9 @@ $buildRule = Get-Content ".cursor/rules/plugin-build.mdc" -Raw
 $buildRule = $buildRule -replace 'template-plugin\.rbxmx', "$name.rbxmx"
 Set-Content ".cursor/rules/plugin-build.mdc" $buildRule -NoNewline
 
-$source = Get-Content "src/init.server.luau" -Raw
+$source = Get-Content "src/App.server.luau" -Raw
 $source = $source -replace 'local PLUGIN_NAME = "Template Plugin"', "local PLUGIN_NAME = `"$displayName`""
-Set-Content "src/init.server.luau" $source -NoNewline
+Set-Content "src/App.server.luau" $source -NoNewline
 
 Write-Host "Installing toolchain..." -ForegroundColor Yellow
 aftman install

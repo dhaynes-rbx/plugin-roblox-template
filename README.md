@@ -19,13 +19,13 @@ Run the bootstrap script to set your plugin name and install tools in one step:
 **Windows (PowerShell):**
 
 ```powershell
-.\setup.ps1
+.\tools\setup.ps1
 ```
 
 **Mac / Linux / Git Bash:**
 
 ```bash
-bash setup.sh
+bash tools/setup.sh
 ```
 
 The script will prompt for your plugin name, update all config files, install the toolchain, fetch packages, and build the plugin.
@@ -47,7 +47,7 @@ This installs Rojo and Wally (pinned in `aftman.toml`).
 Update the following three locations with your plugin name:
 
 - **`default.project.json`** — change the `name` field from `"template-plugin"` to your plugin name (e.g. `"my-cool-plugin"`). This controls the build output filename.
-- **`src/init.server.luau`** — change the `PLUGIN_NAME` variable from `"Template Plugin"` to your display name (e.g. `"My Cool Plugin"`). This controls what appears in Studio.
+- **`src/App.server.luau`** — change the `PLUGIN_NAME` variable from `"Template Plugin"` to your display name (e.g. `"My Cool Plugin"`). This controls what appears in Studio.
 - **`.cursor/rules/plugin-build.mdc`** — change `template-plugin.rbxmx` to match the name in `default.project.json` (e.g. `my-cool-plugin.rbxmx`).
 
 ### 3. Install packages and build
@@ -64,22 +64,28 @@ Open Roblox Studio — your plugin will appear in the **Plugins** toolbar.
 ```
 .
 ├── src/
-│   └── init.server.luau   # Plugin entry point (toolbar, UI, action handler)
-├── default.project.json   # Rojo project config
-├── aftman.toml            # Toolchain versions (Rojo, Wally)
-├── wally.toml             # Package dependencies (React, ReactRoblox)
-├── selene.toml            # Luau linter config
-├── stylua.toml            # Luau formatter config
-├── setup.ps1              # Bootstrap script (Windows / PowerShell)
-├── setup.sh               # Bootstrap script (Mac / Bash)
+│   ├── App.server.luau        # Plugin entry point (toolbar, React mount)
+│   └── Components/
+│       ├── Plugin.luau        # Main panel component
+│       ├── ActionButton.luau  # Action button component
+│       └── StatusLabel.luau   # Status text component
+├── default.project.json       # Rojo project config
+├── aftman.toml                # Toolchain versions (Rojo, Wally)
+├── wally.toml                 # Package dependencies (React, ReactRoblox)
+├── selene.toml                # Luau linter config
+├── stylua.toml                # Luau formatter config
+├── tools/
+│   ├── setup.ps1              # Bootstrap script (Windows / PowerShell)
+│   ├── setup.sh               # Bootstrap script (Mac / Bash)
+│   └── build.sh               # Install packages and build plugin
 └── .cursor/rules/
-    ├── plugin-build.mdc   # Auto-build rule for Cursor agents
-    └── plugin-testing.mdc # Auto-test rule for Cursor agents
+    ├── plugin-build.mdc       # Auto-build rule for Cursor agents
+    └── plugin-testing.mdc     # Auto-test rule for Cursor agents
 ```
 
 ## Development workflow
 
-1. Edit `src/init.server.luau` (and add any modules under `src/`).
+1. Edit files under `src/` — `App.server.luau` is the entry point, components live in `src/Components/`.
 2. Build: `rojo build --plugin <your-plugin-name>.rbxmx`
 3. Reload the plugin in Roblox Studio (**Plugins → Manage Plugins → Reload**).
 4. Test in the Studio viewport.
