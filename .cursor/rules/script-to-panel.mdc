@@ -1,0 +1,121 @@
+---
+alwaysApply: false
+description: Use when converting a Roblox Studio script into a selection-gated plugin panel.
+---
+# Script to Panel
+
+When converting a standalone Studio script into a panel in this plugin framework, follow this pattern:
+
+## 1. Create the tool module
+
+Put all side-effect logic (no UI) in `src/<ToolName>.luau`.
+
+```lua
+local ToolName = {}
+
+function ToolName.doSomething(instance: Instance)
+    -- side effect logic here
+end
+
+return ToolName
+```
+
+## 2. Create the panel component
+
+Add `src/Components/<ToolName>Panel.luau` using the shared framework components:
+
+```lua
+local Selection = game:GetService("Selection")
+local React = require(script.Parent.Parent.Packages.React)
+
+local Panel = require(script.Parent.Panel)
+local Header = require(script.Parent.Header)
+local SelectionButton = require(script.Parent.SelectionButton)
+local Theme = require(script.Parent.Theme)
+local ToolName = require(script.Parent.Parent.ToolName)
+
+local e = React.createElement
+local useState = React.useState
+local useEffect = React.useEffect
+
+local function ToolNamePanel(props)
+    local selectedInstance, setSelectedInstance = useState(nil)
+    local collapsed, setCollapsed = useState(false)
+
+    useEffect(function()
+        local function onSelectionChanged()
+            local sel = Selection:Get()
+            local target = nil
+            for _, obj in sel do
+                if obj:IsA("YourTargetClass") then
+                    target = obj
+                    break
+                end
+            end
+            setSelectedInstance(target)
+        end
+        onSelectionChanged()
+        local conn = Selection.SelectionChanged:Connect(onSelectionChanged)
+        return function() conn:Disconnect() end
+    end, {})
+
+    -- Gate visibility: return nil if nothing relevant is selected
+    if not selectedInstance then
+        return nil
+    end
+
+    return e(Panel, { layoutOrder = props.layoutOrder }, {
+        Header = e(Header, {
+            title = "Tool Name",
+            collapsed = collapsed,
+            onToggle = function() setCollapsed(not collapsed) end,
+            layoutOrder = 1,
+        }),
+        Content = if collapsed then nil else e("Frame", {
+            Size = UDim2.new(1, 0, 0, 0),
+            AutomaticSize = Enum.AutomaticSize.Y,
+            BackgroundTransparency = 1,
+            LayoutOrder = 2,
+        }, {
+            Layout = e("UIListLayout", {
+                Padding = UDim.new(0, 2),
+                SortOrder = Enum.SortOrder.LayoutOrder,
+            }),
+            ActionBtn = e(SelectionButton, {
+                text = "Do Something",
+                layoutOrder = 1,
+                backgroundColor = Theme.ACCENT.Action,
+                onActivated = function()
+                    ToolName.doSomething(selectedInstance)
+                end,
+            }),
+        }),
+    })
+end
+
+return ToolNamePanel
+```
+
+## 3. Register in PanelStack
+
+Open `src/Components/PanelStack.luau` and:
+- Add a `require` for your new panel at the top.
+- Add it as a child of the ScrollingFrame with a unique `layoutOrder`.
+
+```lua
+local ToolNamePanel = require(script.Parent.ToolNamePanel)
+-- ...
+ToolName = e(ToolNamePanel, { plugin = props.plugin, layoutOrder = N }),
+```
+
+## 4. Build
+
+```bash
+rojo build --plugin <name from default.project.json>.rbxmx
+```
+
+## Reference
+
+See the real-world example in [dhaynes-studio-super-plugin](https://github.com/dhaynes-rbx/dhaynes-studio-super-plugin):
+- Tool module: `src/TerrainMover.luau`
+- Panel: `src/Components/TerrainMoverPanel.luau`
